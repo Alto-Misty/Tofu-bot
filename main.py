@@ -40,8 +40,9 @@ async def award(update: Update, context: ContextTypes.DEFAULT_TYPE, points: int,
         await update.message.reply_text("⛔ У вас нет прав.")
         return
 
-    data["score"] += points
-    data["actions"].append({
+    receiver = data["receiver"]
+    receiver["score"] += points
+    receiver["actions"].append({
         "from": user_id,
         "points": points,
         "reason": reason,
@@ -77,17 +78,16 @@ async def brainroot(update, context): await award(update, context, -1, "сиде
 async def itog_dnya(update, context):
     data = load_data()
     msg = "🏁 *Итог дня:*\n"
-    for uid, info in data["users"].items():
-        msg += f"{info['name']}: {info['score']} баллов\n"
+    receiver = data["receiver"]
+    msg += f"{receiver['name'] or 'Получатель'}: {receiver['score']} баллов\n"
     await update.message.reply_text(msg, parse_mode="Markdown")
 
 # За что
 async def za_chto(update, context):
     data = load_data()
     msg = "📋 *Детализация действий:*\n"
-    for record in data["history"][-20:]:  # последние 20
-        user = data["users"].get(record["user_id"], {"name": "Неизвестно"})
-        msg += f"{user['name']}: {record['points']} за {record['reason']}\n"
+    for record in data["receiver"]["actions"]:
+        msg += f"{record['points']:+} — {record['reason']}\n"
     await update.message.reply_text(msg, parse_mode="Markdown")
 
 # Главная функция

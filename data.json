@@ -1,4 +1,8 @@
 {
-  "score": 0,
-  "actions": []
+  "receiver": {
+    "user_id": "123456789",
+    "name": "Ярослав",
+    "score": 0,
+    "actions": []
+  }
 }
