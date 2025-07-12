@@ -1,12 +1,11 @@
-import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
 import json
 from datetime import datetime
 
 DATA_FILE = 'data.json'
 CONFIG_FILE = 'config.json'
-DATA_FILE = 'data.json'
 
 def load_config():
     with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
@@ -92,7 +91,7 @@ async def za_chto(update, context):
     await update.message.reply_text(msg, parse_mode="Markdown")
 
 # Главная функция
-async def main():
+def main():
     app = ApplicationBuilder().token("8058566086:AAGPqbG5ulEw2DIrBWW5CQCHcQPJ6AflxRo").build()
 
     app.add_handler(CommandHandler("results", itog_dnya))
@@ -117,11 +116,7 @@ async def main():
     app.add_handler(CommandHandler("brain_root", brainroot)) #сидел/лежал в телефоне не выполнив цель дня
 
     print("Бот запущен...")
-    await app.run_polling()
+    app.run_polling()
 
 if __name__ == "__main__":
-    import asyncio
-    import nest_asyncio
-    nest_asyncio.apply()
-
-    asyncio.get_event_loop().run_until_complete(main())
+    main()
